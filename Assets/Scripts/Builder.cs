@@ -13,22 +13,36 @@ public class Builder : MonoBehaviour {
         builderColor = GetComponent<Renderer>().material.color;
 
         InvokeRepeating("blink", 0, 0.5f);
+
+        cloneSelected();
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        if(!selected.activeInHierarchy)
-        { 
-            positionGameObject(selected);
-        }
     }
 
-    private void positionGameObject(GameObject obj)
+    public void Build()
+    {
+        moveForward();
+
+        cloneSelected();
+    }
+
+    private void cloneSelected()
     {
         var pos = transform.position; // this is where the Cube will appear when it's instantiated
         var rot = Quaternion.identity; // Quaternion.identity essentially means "no rotation"
-        selected = (GameObject)Instantiate(obj, pos, rot); // The Instantiate command takes a GameObject, a Vector3 for position and a Quaternion for rotation.
+        selected = (GameObject)Instantiate(selected, pos, rot); // The Instantiate command takes a GameObject, a Vector3 for position and a Quaternion for rotation.
+    }
+
+    private void moveForward()
+    {
+        var currentPos = transform.position;
+        var nextPos = new Vector3(currentPos.x, currentPos.y, currentPos.z+2);
+
+        transform.position = nextPos;
+       
     }
 
     void blink()
